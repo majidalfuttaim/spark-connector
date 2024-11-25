@@ -420,6 +420,9 @@ class VerticaDistributedFilesystemWritePipe(val config: DistributedFilesystemWri
     val emptyCopy = "COPY " + tablename.getFullTableName + " FROM '';"
     jdbcLayer.executeUpdate(emptyCopy)
 
+    // Do not convert the timestamp fields to Asia/Dubai timezone
+    jdbcLayer.executeUpdate("SET TIMEZONE TO 'GMT';")
+
     val ret = for {
 
       // Explain copy first to verify it's valid.
